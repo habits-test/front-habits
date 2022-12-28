@@ -6,7 +6,9 @@ function App() {
   useEffect(() => {
     store.setTest();
   }, []);
-  return <div>Hello {store.test}</div>;
+  return (
+    <div className="text-xl font-bold text-center">Hello {store.test}</div>
+  );
 }
 
 export default App;
