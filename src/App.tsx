@@ -1,13 +1,17 @@
 import { useEffect } from "react";
+import LoginPage from "./pages/LoginPage";
 import useAuthStore from "./store/authStore";
 
 function App() {
-  const store = useAuthStore();
+  const { test, setTest } = useAuthStore();
   useEffect(() => {
-    store.setTest();
+    setTest();
   }, []);
   return (
-    <div className="text-xl font-bold text-center">Hello {store.test}</div>
+    <>
+      <div className="text-xl font-bold text-center">Hello {test}</div>
+      <LoginPage />
+    </>
   );
 }
 
