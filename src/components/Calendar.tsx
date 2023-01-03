@@ -5,7 +5,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { StaticDatePicker } from "@mui/x-date-pickers/StaticDatePicker";
 import { useState } from "react";
 
-const LoginForm = () => {
+const Calendar = () => {
   const [value, setValue] = useState(dayjs("2022-12-08"));
 
   return (
@@ -26,4 +26,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default Calendar;
