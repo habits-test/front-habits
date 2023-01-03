@@ -3,14 +3,19 @@ import { Navigate } from "react-router-dom";
 import LoginForm from "../components/auth/LoginForm";
 import useAuthStore from "../store/authStore";
 import LinearProgress from "@mui/material/LinearProgress";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
   const { updateSigninFormData, signinformData, signin, loggedIn, checkAuth } =
     useAuthStore();
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const navigate = useNavigate();
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    signin();
+    await signin();
+
+    navigate("/");
   };
 
   const loginProps = {

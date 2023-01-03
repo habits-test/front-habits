@@ -13,15 +13,23 @@ type Signin = {
   password: string;
 }
 
+type UserData =  {
+  firstName: string;
+  lastName: string;
+  email: string;
+}
+
 interface AuthState {
   signupformData: Signup,
   signinformData: Signin,
   loggedIn: boolean | null,
+  userData: UserData,
   updateSignupFormData: (e: any) => void,
   signup: () => void,
   updateSigninFormData: (e: any) => void,
   signin: () => void,
   checkAuth: () => void
+  logout: () => void
 }
 
 const useAuthStore = create<AuthState>()((set) => ({
@@ -34,6 +42,11 @@ const useAuthStore = create<AuthState>()((set) => ({
   signinformData: {
     email: "",
     password: "",
+  },
+  userData: {
+    firstName : "",
+    lastName: "",
+    email: ""
   },
   loggedIn: null,
   updateSignupFormData: (e: any) => {
@@ -88,12 +101,27 @@ const useAuthStore = create<AuthState>()((set) => ({
 
   checkAuth: async () => {
     try {
-      await axios.get("/check-auth");
+      const res = await axios.get("/check-auth");
+      const {firstName, lastName, email} = res.data.user
       set({ loggedIn: true });
+      set((state) => {
+        return {
+          userData: {
+            ...state.userData,
+            email, 
+            firstName,
+            lastName
+          }
+        }
+      })
     } catch (err) {
       set({ loggedIn: false });
     }
   },
+  logout: async () => {
+    await axios.get("/logout");
+    set({ loggedIn: false });
+  }
 })
 )
 

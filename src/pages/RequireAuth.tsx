@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import useAuthStore from "../store/authStore";
 import LinearProgress from "@mui/material/LinearProgress";
+import HeaderPage from "./HeaderPage";
 
 type RequireAuthProps = {
   children?: React.ReactNode;
@@ -20,7 +21,12 @@ const RequireAuth = ({ children }: RequireAuthProps) => {
 
   if (loggedIn === false) return <Navigate to="/login" />;
 
-  return <div>{children}</div>;
+  return (
+    <div>
+      <HeaderPage />
+      {children}
+    </div>
+  );
 };
 
 export default RequireAuth;

@@ -10,6 +10,7 @@ const Calendar = () => {
 
   return (
     <>
+      <h2 className="text-lg font-bold text-center p-2 bg-blue-500">Pushups</h2>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <StaticDatePicker
           displayStaticWrapperAs="desktop"
@@ -21,7 +22,6 @@ const Calendar = () => {
           renderInput={(params) => <TextField {...params} />}
         />
       </LocalizationProvider>
-      {value.format("YYYY-MM-DD")}
     </>
   );
 };
