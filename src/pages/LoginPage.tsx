@@ -5,13 +5,15 @@ import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
+// import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { Link } from "react-router-dom";
+import useAuthStore from "../store/authStore";
 
 function Copyright(props: any) {
   return (
@@ -22,9 +24,6 @@ function Copyright(props: any) {
       {...props}
     >
       {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{" "}
       {new Date().getFullYear()}
       {"."}
     </Typography>
@@ -34,13 +33,11 @@ function Copyright(props: any) {
 const theme = createTheme();
 
 const LoginPage = () => {
+  const { updateSigninFormData, signinformData, signin } = useAuthStore();
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    signin();
   };
 
   return (
@@ -76,6 +73,8 @@ const LoginPage = () => {
               name="email"
               autoComplete="email"
               autoFocus
+              value={signinformData.email}
+              onChange={updateSigninFormData}
             />
             <TextField
               margin="normal"
@@ -86,6 +85,8 @@ const LoginPage = () => {
               type="password"
               id="password"
               autoComplete="current-password"
+              value={signinformData.password}
+              onChange={updateSigninFormData}
             />
             {/* <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
@@ -106,8 +107,11 @@ const LoginPage = () => {
                 </Link>
               </Grid> */}
               <Grid item>
-                <Link href="#" variant="body2">
-                  {"Don't have an account? Sign Up"}
+                <Link
+                  to="/signup"
+                  className="text-sm underline text-blue-700 hover:text-blue-400"
+                >
+                  Don't have an account? Sign Up
                 </Link>
               </Grid>
             </Grid>

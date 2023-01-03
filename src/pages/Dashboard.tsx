@@ -1,16 +1,20 @@
 import { useEffect } from "react";
+import useAppStore from "../store/appStore";
 import useAuthStore from "../store/authStore";
 
 const Dashboard = () => {
-  const { test, setTest } = useAuthStore();
+  const { test, setTest } = useAppStore();
+  const { loggedIn, checkAuth } = useAuthStore();
   useEffect(() => {
     setTest();
+    checkAuth();
   }, []);
   return (
     <div>
       {" "}
+      <div className="text-xl font-bold text-center">Dashboard - {test}</div>
       <div className="text-xl font-bold text-center">
-        Dashboard -Hello {test}
+        Status : {loggedIn ? "Logged in" : "Logged out"}
       </div>
     </div>
   );
