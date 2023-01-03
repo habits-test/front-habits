@@ -4,10 +4,9 @@ import useAuthStore from "../store/authStore";
 
 const Dashboard = () => {
   const { test, setTest } = useAppStore();
-  const { loggedIn, checkAuth } = useAuthStore();
+  const { loggedIn } = useAuthStore();
   useEffect(() => {
     setTest();
-    checkAuth();
   }, []);
   return (
     <div>

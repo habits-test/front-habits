@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import RequireAuth from "./pages/RequireAuth";
 import Dashboard from "./pages/Dashboard";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
@@ -10,7 +11,14 @@ function App() {
         <Routes>
           <Route path="/login" element={<LoginPage />}></Route>
           <Route path="/signup" element={<SignupPage />}></Route>
-          <Route index element={<Dashboard />}></Route>
+          <Route
+            index
+            element={
+              <RequireAuth>
+                <Dashboard />
+              </RequireAuth>
+            }
+          ></Route>
         </Routes>
       </BrowserRouter>
     </>
