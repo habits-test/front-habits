@@ -1,50 +1,30 @@
 import create from "zustand";
 import axios from "axios";
+import { Dayjs } from "dayjs";
 
 type Habit = {
   id?: number;
   name: string;
-  time: string;
+  time: string | Dayjs | null;
 };
 
 interface HabitState {
   loading: boolean;
   habits: Habit[];
-  habitForm: Habit;
   getHabits: () => void;
-  createHabit: () => void;
-  updateHabitForm: (e: any) => void;
+  createHabit: (data: Habit) => void;
 }
 
 const useHabitStore = create<HabitState>()((set) => ({
-  loading: true,
+  loading: false,
   habits: [],
-  habitForm: {
-    id: -1,
-    name: "",
-    time: "",
-  },
   getHabits: async () => {
+    set({ loading: true });
     const res = await axios.get("habits");
     set({ habits: res.data.habits, loading: false });
   },
-  createHabit: () => {
-    const { habitForm } = useHabitStore.getState();
-
-    console.log(habitForm);
-  },
-
-  updateHabitForm: (e: any) => {
-    const { name, value } = e.target;
-
-    set((state) => {
-      return {
-        habitForm: {
-          ...state.habitForm,
-          [name]: value,
-        },
-      };
-    });
+  createHabit: async (data) => {
+    const res = await axios.post("habits", data);
   },
 }));
 

@@ -8,7 +8,7 @@ import { useState } from "react";
 type Habit = {
   id?: number;
   name: string;
-  time: string;
+  time: string | Dayjs | null;
 };
 
 type CalendarProps = {
@@ -21,14 +21,14 @@ const Calendar = ({ habit }: CalendarProps) => {
   return (
     <>
       <h2 className="text-lg font-bold text-center p-2 bg-blue-500">
-        {habit.name} : {habit.time}
+        {habit.name + " " + habit.time}
       </h2>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <StaticDatePicker
           displayStaticWrapperAs="desktop"
           openTo="day"
           value={value}
-          onChange={(e) => {
+          onChange={(e: any) => {
             setValue(dayjs(e?.$d));
           }}
           renderInput={(params) => <TextField {...params} />}

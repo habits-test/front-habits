@@ -5,14 +5,7 @@ import useAuthStore from "../store/authStore";
 import useHabitStore from "../store/habitStore";
 
 const Dashboard = () => {
-  const {
-    getHabits,
-    habits,
-    loading,
-    createHabit,
-    habitForm,
-    updateHabitForm,
-  } = useHabitStore();
+  const { getHabits, habits, loading, createHabit } = useHabitStore();
   const { userData } = useAuthStore();
   useEffect(() => {
     getHabits();
@@ -22,13 +15,12 @@ const Dashboard = () => {
     habits,
     loading,
     createHabit,
-    habitForm,
-    updateHabitForm,
+    getHabits,
   };
 
   return (
     <div>
-      {/* <User test={test} userData={userData} /> */}
+      {/* <User userData={userData} /> */}
       <Calendars {...calendarsProps} />
     </div>
   );

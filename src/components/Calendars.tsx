@@ -13,31 +13,52 @@ import TextField from "@mui/material/TextField";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DesktopTimePicker } from "@mui/x-date-pickers/DesktopTimePicker";
-import { Dayjs } from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
+import { StaticDatePicker } from "@mui/x-date-pickers";
 
 type Habit = {
   id?: number;
   name: string;
-  time: string;
+  time: string | Dayjs | null;
+};
+
+type habitState = Habit & {
+  showTime: string | Dayjs | null;
 };
 
 type CalendarsProps = {
   habits: Habit[];
   loading: boolean;
-  createHabit: () => void;
-  habitForm: Habit;
-  updateHabitForm: (e: any) => void;
+  createHabit: (data: Habit) => void;
+  getHabits: () => void;
 };
 
 const Calendars = ({
   habits,
   loading,
   createHabit,
-  habitForm,
-  updateHabitForm,
+  getHabits,
 }: CalendarsProps) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [value, setValue] = useState<Dayjs | null>(null);
+  const [value, setValue] = useState<habitState>({
+    name: "",
+    time: "",
+    showTime: dayjs(),
+  });
+
+  const handleChange = (e: any) => {
+    if (e.$L) {
+      setValue({ ...value, time: `${e.$H}:${e.$m}`, showTime: e });
+    } else {
+      setValue({ ...value, name: e.target.value });
+    }
+  };
+
+  const hadnleCreate = async () => {
+    await createHabit({ name: value.name, time: value.time });
+    await getHabits();
+    setDrawerOpen(false);
+  };
 
   const ButtonDrawer = () => {
     return (
@@ -60,16 +81,14 @@ const Calendars = ({
             label="Name"
             variant="outlined"
             name="name"
-            value={habitForm.name}
-            onChange={updateHabitForm}
+            value={value.name}
+            onChange={handleChange}
           />
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DesktopTimePicker
               label="Time"
-              value={value}
-              onChange={(newValue) => {
-                setValue(newValue);
-              }}
+              value={value.showTime}
+              onChange={(e) => handleChange(e)}
               renderInput={(params) => <TextField {...params} />}
             />
           </LocalizationProvider>
@@ -79,7 +98,7 @@ const Calendars = ({
             mt: 4,
           }}
           variant="contained"
-          onClick={createHabit}
+          onClick={hadnleCreate}
         >
           Create
         </Button>

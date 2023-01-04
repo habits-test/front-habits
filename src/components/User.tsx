@@ -1,5 +1,4 @@
 type UserProps = {
-  test: string | null;
   userData: {
     firstName: string;
     lastName: string;
@@ -7,10 +6,10 @@ type UserProps = {
   };
 };
 
-const User = ({ test, userData }: UserProps) => {
+const User = ({ userData }: UserProps) => {
   return (
     <div>
-      <div className="text-xl font-bold text-center">Dashboard - {test}</div>
+      <div className="text-xl font-bold text-center">Dashboard</div>
       <div className="text-xl font-bold text-center">
         email : {userData.email}
       </div>
