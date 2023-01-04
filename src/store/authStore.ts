@@ -1,35 +1,35 @@
-import create from 'zustand'
+import create from "zustand";
 import axios from "axios";
 
-type Signup =  {
+type Signup = {
   firstName: string;
   lastName: string;
   email: string;
   password: string;
-}
+};
 
 type Signin = {
   email: string;
   password: string;
-}
+};
 
-type UserData =  {
+type UserData = {
   firstName: string;
   lastName: string;
   email: string;
-}
+};
 
 interface AuthState {
-  signupformData: Signup,
-  signinformData: Signin,
-  loggedIn: boolean | null,
-  userData: UserData,
-  updateSignupFormData: (e: any) => void,
-  signup: () => void,
-  updateSigninFormData: (e: any) => void,
-  signin: () => void,
-  checkAuth: () => void
-  logout: () => void
+  signupformData: Signup;
+  signinformData: Signin;
+  loggedIn: boolean | null;
+  userData: UserData;
+  updateSignupFormData: (e: any) => void;
+  signup: () => void;
+  updateSigninFormData: (e: any) => void;
+  signin: () => void;
+  checkAuth: () => void;
+  logout: () => void;
 }
 
 const useAuthStore = create<AuthState>()((set) => ({
@@ -44,9 +44,9 @@ const useAuthStore = create<AuthState>()((set) => ({
     password: "",
   },
   userData: {
-    firstName : "",
+    firstName: "",
     lastName: "",
-    email: ""
+    email: "",
   },
   loggedIn: null,
   updateSignupFormData: (e: any) => {
@@ -63,8 +63,8 @@ const useAuthStore = create<AuthState>()((set) => ({
   },
   signup: async () => {
     const { signupformData } = useAuthStore.getState();
-    
-    console.log(signupformData)
+
+    console.log(signupformData);
 
     await axios.post("/signup", signupformData);
     set({
@@ -96,25 +96,25 @@ const useAuthStore = create<AuthState>()((set) => ({
         email: "",
         password: "",
       },
-      loggedIn: null
+      loggedIn: null,
     });
   },
 
   checkAuth: async () => {
     try {
       const res = await axios.get("/check-auth");
-      const {firstName, lastName, email} = res.data.user
+      const { firstName, lastName, email } = res.data.user;
       set({ loggedIn: true });
       set((state) => {
         return {
           userData: {
             ...state.userData,
-            email, 
+            email,
             firstName,
-            lastName
-          }
-        }
-      })
+            lastName,
+          },
+        };
+      });
     } catch (err) {
       set({ loggedIn: false });
     }
@@ -123,8 +123,7 @@ const useAuthStore = create<AuthState>()((set) => ({
     set({ loggedIn: null });
     await axios.get("/logout");
     set({ loggedIn: false });
-  }
-})
-)
+  },
+}));
 
 export default useAuthStore;
