@@ -96,6 +96,7 @@ const useAuthStore = create<AuthState>()((set) => ({
         email: "",
         password: "",
       },
+      loggedIn: null
     });
   },
 
@@ -119,6 +120,7 @@ const useAuthStore = create<AuthState>()((set) => ({
     }
   },
   logout: async () => {
+    set({ loggedIn: null });
     await axios.get("/logout");
     set({ loggedIn: false });
   }
