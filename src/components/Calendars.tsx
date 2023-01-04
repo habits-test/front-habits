@@ -70,7 +70,7 @@ const Calendars = ({
               onChange={(newValue) => {
                 setValue(newValue);
               }}
-              renderInput={(params) => <TextField {...params} name="time" />}
+              renderInput={(params) => <TextField {...params} />}
             />
           </LocalizationProvider>
         </Stack>
