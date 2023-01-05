@@ -25,6 +25,11 @@ const useHabitStore = create<HabitState>()((set) => ({
   },
   createHabit: async (data) => {
     const res = await axios.post("habits", data);
+    set((state) => {
+      return {
+        habits: [res.data.habit, ...state.habits],
+      };
+    });
   },
 }));
 

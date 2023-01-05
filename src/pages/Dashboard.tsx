@@ -15,7 +15,6 @@ const Dashboard = () => {
     habits,
     loading,
     createHabit,
-    getHabits,
   };
 
   return (

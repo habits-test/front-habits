@@ -14,7 +14,6 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DesktopTimePicker } from "@mui/x-date-pickers/DesktopTimePicker";
 import dayjs, { Dayjs } from "dayjs";
-import { StaticDatePicker } from "@mui/x-date-pickers";
 
 type Habit = {
   id?: number;
@@ -30,15 +29,9 @@ type CalendarsProps = {
   habits: Habit[];
   loading: boolean;
   createHabit: (data: Habit) => void;
-  getHabits: () => void;
 };
 
-const Calendars = ({
-  habits,
-  loading,
-  createHabit,
-  getHabits,
-}: CalendarsProps) => {
+const Calendars = ({ habits, loading, createHabit }: CalendarsProps) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [value, setValue] = useState<habitState>({
     name: "",
@@ -56,7 +49,6 @@ const Calendars = ({
 
   const hadnleCreate = async () => {
     await createHabit({ name: value.name, time: value.time });
-    await getHabits();
     setDrawerOpen(false);
   };
 
@@ -70,7 +62,6 @@ const Calendars = ({
       </div>
     );
   };
-
   const BodyDrawer = () => {
     return (
       <div className="px-3 flex flex-col">
@@ -94,6 +85,7 @@ const Calendars = ({
           </LocalizationProvider>
         </Stack>
         <Button
+          disabled={value.name === "" || value.time === ""}
           sx={{
             mt: 4,
           }}
