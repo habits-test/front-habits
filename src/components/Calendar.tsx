@@ -19,9 +19,15 @@ type CalendarProps = {
   habit: Habit;
 };
 
+type HighlightedDays = {
+  [year: string]: {
+    [month: string]: number[];
+  };
+};
+
 const Calendar = ({ habit }: CalendarProps) => {
-  const [value, setValue] = useState(new Date());
-  const [highlightedDays, setHighlightedDays] = useState({
+  const [value, setValue] = useState<Date>(new Date());
+  const [highlightedDays, setHighlightedDays] = useState<HighlightedDays>({
     "2022": {
       "0": [1, 2, 4, 5, 11],
       "1": [1],
@@ -103,7 +109,7 @@ const Calendar = ({ habit }: CalendarProps) => {
           value={value}
           minDate={startingDate}
           disableFuture
-          onChange={(day: Date) => toggleDay(day)}
+          onChange={(day: Date | null) => toggleDay(day)}
           renderInput={(params) => {
             return <TextField {...params} />;
           }}
