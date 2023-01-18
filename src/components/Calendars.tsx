@@ -19,9 +19,13 @@ type Habit = {
   id?: number;
   name: string;
   time: string | Dayjs | null;
+  createdAt?: Date;
+  progress?: HighlightedDays;
 };
 
-type habitState = Habit & {
+type habitState = {
+  name: string;
+  time: string | Dayjs | null;
   showTime: string | Dayjs | null;
 };
 
@@ -29,9 +33,21 @@ type CalendarsProps = {
   habits: Habit[];
   loading: boolean;
   createHabit: (data: Habit) => void;
+  updateProgress: (id: number, data: object) => void;
 };
 
-const Calendars = ({ habits, loading, createHabit }: CalendarsProps) => {
+type HighlightedDays = {
+  [year: string]: {
+    [month: string]: number[];
+  };
+};
+
+const Calendars = ({
+  habits,
+  loading,
+  createHabit,
+  updateProgress,
+}: CalendarsProps) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [value, setValue] = useState<habitState>({
     name: "",
@@ -124,7 +140,7 @@ const Calendars = ({ habits, loading, createHabit }: CalendarsProps) => {
                     flexDirection: "column",
                   }}
                 >
-                  <Calendar habit={habit} />
+                  <Calendar habit={habit} updateProgress={updateProgress} />
                 </Paper>
               </Grid>
             );

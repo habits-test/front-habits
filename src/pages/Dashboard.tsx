@@ -5,7 +5,8 @@ import useAuthStore from "../store/authStore";
 import useHabitStore from "../store/habitStore";
 
 const Dashboard = () => {
-  const { getHabits, habits, loading, createHabit } = useHabitStore();
+  const { getHabits, habits, loading, createHabit, updateProgress } =
+    useHabitStore();
   const { userData } = useAuthStore();
   useEffect(() => {
     getHabits();
@@ -15,6 +16,7 @@ const Dashboard = () => {
     habits,
     loading,
     createHabit,
+    updateProgress,
   };
 
   return (

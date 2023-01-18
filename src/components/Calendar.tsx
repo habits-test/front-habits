@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import dayjs, { Dayjs } from "dayjs";
 import TextField from "@mui/material/TextField";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -13,10 +13,8 @@ type Habit = {
   id?: number;
   name: string;
   time: string | Dayjs | null;
-};
-
-type CalendarProps = {
-  habit: Habit;
+  createdAt: Date;
+  progress: HighlightedDays;
 };
 
 type HighlightedDays = {
@@ -25,23 +23,18 @@ type HighlightedDays = {
   };
 };
 
-const Calendar = ({ habit }: CalendarProps) => {
+type CalendarProps = {
+  habit: Habit;
+  updateProgress: (id: number, data: object) => void;
+};
+
+const Calendar = ({ habit, updateProgress }: CalendarProps) => {
   const [value, setValue] = useState<Date>(new Date());
-  const [highlightedDays, setHighlightedDays] = useState<HighlightedDays>({
-    "2022": {
-      "0": [1, 2, 4, 5, 11],
-      "1": [1],
-      "10": [
-        1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
-        22,
-      ],
-      "11": [
-        1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
-        22,
-      ],
-    },
-    "2023": { "0": [1, 2, 4, 5, 12] },
-  });
+  const [highlightedDays, setHighlightedDays] = useState<HighlightedDays>(
+    habit.progress
+  );
+
+  const isMounted = useRef(false);
 
   const checkIfDayExisted = (day: any) => {
     const year = day.$y;
@@ -57,7 +50,6 @@ const Calendar = ({ habit }: CalendarProps) => {
     const year = day.$y;
     const month = day.$M;
     if (!(year in highlightedDays)) {
-      console.log("no year");
       setHighlightedDays({
         ...highlightedDays,
         [year]: { [month]: [day.$d.getDate()] },
@@ -66,19 +58,16 @@ const Calendar = ({ habit }: CalendarProps) => {
     }
 
     if (!(month in highlightedDays[year])) {
-      console.log("no month");
       setHighlightedDays({
         ...highlightedDays,
         [year]: { ...highlightedDays[year], [month]: [day.$d.getDate()] },
       });
-
       return;
     }
 
     for (const y in highlightedDays) {
       for (const m in highlightedDays[y]) {
         if (year == y && month == m) {
-          console.log("year and month");
           setHighlightedDays({
             ...highlightedDays,
             [year]: {
@@ -94,7 +83,17 @@ const Calendar = ({ habit }: CalendarProps) => {
   const toggleElement = (arr: number[], val: number) =>
     arr.includes(val) ? arr.filter((el) => el !== val) : [...arr, val];
 
-  let startingDate = new Date("2022-10-15");
+  let startingDate = new Date(habit.createdAt);
+  startingDate.setDate(startingDate.getDate() - 1);
+  let minDate = new Date(habit.createdAt);
+
+  useEffect(() => {
+    if (isMounted.current) {
+      updateProgress(habit.id, highlightedDays);
+    } else {
+      isMounted.current = true;
+    }
+  }, [highlightedDays]);
 
   return (
     <>
@@ -107,22 +106,21 @@ const Calendar = ({ habit }: CalendarProps) => {
           displayStaticWrapperAs="desktop"
           openTo="day"
           value={value}
-          minDate={startingDate}
+          minDate={minDate}
           disableFuture
           onChange={(day: Date | null) => toggleDay(day)}
           renderInput={(params) => {
             return <TextField {...params} />;
           }}
-          renderDay={(day: Date, _value: Date, DayComponentProps: any) => {
-            console.log();
+          renderDay={(day: any, _value: Date[], DayComponentProps: any) => {
             const isSelected = checkIfDayExisted(day);
             return (
               <Badge
                 key={day.toString()}
                 overlap="circular"
                 badgeContent={
-                  day < new Date() &&
-                  day >= startingDate &&
+                  day.$d < new Date() &&
+                  day.$d > startingDate &&
                   !DayComponentProps.outsideCurrentMonth ? (
                     isSelected ? (
                       <CheckIcon color="success" />

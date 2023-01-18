@@ -1,4 +1,4 @@
-import create from "zustand";
+import { create } from "zustand";
 import axios from "axios";
 import { Dayjs } from "dayjs";
 
@@ -13,6 +13,7 @@ interface HabitState {
   habits: Habit[];
   getHabits: () => void;
   createHabit: (data: Habit) => void;
+  updateProgress: (id: number, data: object) => void;
 }
 
 const useHabitStore = create<HabitState>()((set) => ({
@@ -30,6 +31,11 @@ const useHabitStore = create<HabitState>()((set) => ({
         habits: [res.data.habit, ...state.habits],
       };
     });
+  },
+
+  updateProgress: async (id: number, data: object) => {
+    const res = await axios.put(`habits/${id}`, { progress: data });
+    console.log(res);
   },
 }));
 
