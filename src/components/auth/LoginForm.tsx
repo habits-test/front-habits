@@ -1,4 +1,4 @@
-import * as React from "react";
+import CircularProgress from "@mui/material/CircularProgress";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -30,6 +30,7 @@ type LoginFormProps = {
   updateSigninFormData: (e: any) => void;
   signinformData: { email: string; password: string };
   handleSubmit: (e: any) => void;
+  loading: boolean;
 };
 
 const theme = createTheme();
@@ -38,6 +39,7 @@ const LoginForm = ({
   updateSigninFormData,
   signinformData,
   handleSubmit,
+  loading,
 }: LoginFormProps) => {
   return (
     <ThemeProvider theme={theme}>
@@ -87,15 +89,30 @@ const LoginForm = ({
               value={signinformData.password}
               onChange={updateSigninFormData}
             />
-
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Sign In
-            </Button>
+            <Box sx={{ position: "relative" }}>
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+                disabled={loading}
+              >
+                Sign In
+              </Button>
+              {loading && (
+                <CircularProgress
+                  size={24}
+                  sx={{
+                    color: "primary",
+                    position: "absolute",
+                    top: "50%",
+                    left: "50%",
+                    marginTop: "-6px",
+                    marginLeft: "-12px",
+                  }}
+                />
+              )}
+            </Box>
             <Grid container>
               <Grid item>
                 <Link

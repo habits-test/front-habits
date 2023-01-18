@@ -20,6 +20,7 @@ type UserData = {
 };
 
 interface AuthState {
+  loading: boolean;
   signupformData: Signup;
   signinformData: Signin;
   loggedIn: boolean | null;
@@ -33,6 +34,7 @@ interface AuthState {
 }
 
 const useAuthStore = create<AuthState>()((set) => ({
+  loading: false,
   signupformData: {
     firstName: "",
     lastName: "",
@@ -90,6 +92,7 @@ const useAuthStore = create<AuthState>()((set) => ({
   },
   signin: async () => {
     const { signinformData } = useAuthStore.getState();
+    set({ loading: true });
     await axios.post("/signin", signinformData);
     set({
       signinformData: {
@@ -97,6 +100,7 @@ const useAuthStore = create<AuthState>()((set) => ({
         password: "",
       },
       loggedIn: null,
+      loading: false,
     });
   },
 

@@ -6,8 +6,14 @@ import LinearProgress from "@mui/material/LinearProgress";
 import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
-  const { updateSigninFormData, signinformData, signin, loggedIn, checkAuth } =
-    useAuthStore();
+  const {
+    updateSigninFormData,
+    signinformData,
+    signin,
+    loggedIn,
+    checkAuth,
+    loading,
+  } = useAuthStore();
 
   const navigate = useNavigate();
 
@@ -22,6 +28,7 @@ const LoginPage = () => {
     signinformData,
     handleSubmit,
     updateSigninFormData,
+    loading,
   };
 
   useEffect(() => {
