@@ -26,8 +26,6 @@ type Habit = {
 type CreateHabit = {
   name: string;
   time: string | Dayjs | null;
-  createdAt?: Date;
-  progress?: HighlightedDays;
 };
 
 type habitState = {

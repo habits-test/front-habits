@@ -6,13 +6,25 @@ type Habit = {
   id: number;
   name: string;
   time: string | Dayjs | null;
+  createdAt: Date;
+  progress: HighlightedDays;
 };
 
+type HighlightedDays = {
+  [year: string]: {
+    [month: string]: number[];
+  };
+};
+
+type CreateHabit = {
+  name: string;
+  time: string | Dayjs | null;
+};
 interface HabitState {
   loading: boolean;
   habits: Habit[];
   getHabits: () => void;
-  createHabit: (data: Habit) => void;
+  createHabit: (data: CreateHabit) => void;
   updateProgress: (id: number, data: object) => void;
 }
 
