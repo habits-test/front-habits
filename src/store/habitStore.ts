@@ -3,7 +3,7 @@ import axios from "axios";
 import { Dayjs } from "dayjs";
 
 type Habit = {
-  id?: number;
+  id: number;
   name: string;
   time: string | Dayjs | null;
 };
@@ -35,7 +35,6 @@ const useHabitStore = create<HabitState>()((set) => ({
 
   updateProgress: async (id: number, data: object) => {
     const res = await axios.put(`habits/${id}`, { progress: data });
-    console.log(res);
   },
 }));
 

@@ -16,7 +16,14 @@ import { DesktopTimePicker } from "@mui/x-date-pickers/DesktopTimePicker";
 import dayjs, { Dayjs } from "dayjs";
 
 type Habit = {
-  id?: number;
+  id: number;
+  name: string;
+  time: string | Dayjs | null;
+  createdAt: Date;
+  progress: HighlightedDays;
+};
+
+type CreateHabit = {
   name: string;
   time: string | Dayjs | null;
   createdAt?: Date;
@@ -32,7 +39,7 @@ type habitState = {
 type CalendarsProps = {
   habits: Habit[];
   loading: boolean;
-  createHabit: (data: Habit) => void;
+  createHabit: (data: CreateHabit) => void;
   updateProgress: (id: number, data: object) => void;
 };
 

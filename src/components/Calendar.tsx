@@ -10,7 +10,7 @@ import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 
 type Habit = {
-  id?: number;
+  id: number;
   name: string;
   time: string | Dayjs | null;
   createdAt: Date;
